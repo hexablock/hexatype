@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package hexatype;
+
+import "github.com/hexablock/hexaring/structs.proto";
+
+// Hexalog entry
+message Entry {
+    bytes Previous = 1;
+    uint64 Timestamp = 2;
+    uint32 Height = 3;
+    bytes Key = 4;
+    bytes Data = 5;
+}
+
+// Request and response shared structure for hexalog
+message ReqResp {
+    bytes ID = 1;
+    Entry Entry = 2;
+    RequestOptions Options = 3;
+}
+
+// Hexalog request options
+message RequestOptions {
+    // Index of the source in the PeerSet.  This is set internally by the log
+    int32 SourceIndex = 1;
+    // Set of peers for the request.
+    repeated hexaring.Location PeerSet = 2;
+}
+
+message KeyValuePair {
+    bytes Key = 1;
+    bytes Value = 2;
+    Entry Entry = 3;
+}
