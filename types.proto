@@ -13,6 +13,12 @@ message Entry {
     bytes Data = 5;
 }
 
+message KeylogIndex {
+    bytes Key = 1;              // key for the index
+    bytes Location = 2;         // location id
+    repeated bytes Entries = 3; // entry ids
+}
+
 // Request and response shared structure for hexalog
 message ReqResp {
     bytes ID = 1;
