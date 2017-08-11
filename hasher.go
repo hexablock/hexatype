@@ -2,6 +2,7 @@ package hexatype
 
 import (
 	"crypto/sha1"
+	"crypto/sha256"
 	"encoding/json"
 	"hash"
 )
@@ -30,6 +31,26 @@ func (hasher *SHA1Hasher) Algorithm() HashAlgorithm {
 
 // MarshalJSON is a custom json marshaller or the hasher
 func (hasher SHA1Hasher) MarshalJSON() ([]byte, error) {
+	return json.Marshal(map[string]interface{}{
+		"Algorithm": hasher.Algorithm(),
+	})
+}
+
+// SHA256Hasher implements the Hasher interface for SHA1
+type SHA256Hasher struct{}
+
+// New returns a new instance of a SHA1 hasher
+func (hasher *SHA256Hasher) New() hash.Hash {
+	return sha256.New()
+}
+
+// Algorithm returns the hashing algorithm the hasher implements
+func (hasher *SHA256Hasher) Algorithm() HashAlgorithm {
+	return HashAlgorithm("SHA256")
+}
+
+// MarshalJSON is a custom json marshaller or the hasher
+func (hasher SHA256Hasher) MarshalJSON() ([]byte, error) {
 	return json.Marshal(map[string]interface{}{
 		"Algorithm": hasher.Algorithm(),
 	})

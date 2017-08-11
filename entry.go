@@ -20,12 +20,18 @@ func (entry *Entry) Clone() *Entry {
 
 // MarshalJSON is a custom JSON marshaler for Entry
 func (entry Entry) MarshalJSON() ([]byte, error) {
-	m := map[string]interface{}{
-		"Key":       entry.Key,
-		"Previous":  hex.EncodeToString(entry.Previous),
-		"Timestamp": entry.Timestamp,
-		"Height":    entry.Height,
-		"Data":      entry.Data,
+	m := struct {
+		Key       []byte
+		Previous  string
+		Height    uint32
+		Timestamp uint64
+		Data      []byte
+	}{
+		Key:       entry.Key,
+		Previous:  hex.EncodeToString(entry.Previous),
+		Timestamp: entry.Timestamp,
+		Height:    entry.Height,
+		Data:      entry.Data,
 	}
 	return json.Marshal(m)
 }

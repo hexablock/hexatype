@@ -1,6 +1,11 @@
 package hexatype
 
-import "bytes"
+import (
+	"bytes"
+	"encoding/hex"
+	"encoding/json"
+	"log"
+)
 
 // NewKeylogIndex creates a new keylog index
 func NewKeylogIndex(key, locID []byte) *KeylogIndex {
@@ -69,6 +74,8 @@ func (idx *KeylogIndex) Iter(seek []byte, cb func(id []byte) error) (err error) 
 		}
 	}
 
+	log.Printf("[DEBUG] seek=%x pos=%d", seek, s)
+
 	l := idx.Count()
 	// Start from seek issueing callbacks
 	for i := s; i < l; i++ {
@@ -79,6 +86,27 @@ func (idx *KeylogIndex) Iter(seek []byte, cb func(id []byte) error) (err error) 
 	}
 
 	return err
+}
+
+// MarshalJSON is a custom marshaller to handle encoding byte slices to hex.  We do not
+// have an unmarshaller as the index is not directly written to.
+func (idx *KeylogIndex) MarshalJSON() ([]byte, error) {
+
+	obj := struct {
+		Key      string
+		Location string
+		Entries  []string
+	}{
+		Key:      string(idx.Key),
+		Location: hex.EncodeToString(idx.Location),
+		Entries:  make([]string, len(idx.Entries)),
+	}
+
+	for i, e := range idx.Entries {
+		obj.Entries[i] = hex.EncodeToString(e)
+	}
+
+	return json.Marshal(obj)
 }
 
 func isZeroBytes(b []byte) bool {
