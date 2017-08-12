@@ -1,6 +1,10 @@
 package hexatype
 
-import "errors"
+import (
+	"errors"
+
+	"google.golang.org/grpc"
+)
 
 var (
 	// ErrPreviousHash is used when the previous hash of an entry does not match
@@ -13,4 +17,37 @@ var (
 	ErrKeyExists = errors.New("key exists")
 	// ErrKeyInvalid gets used when an invalid key is seen
 	ErrKeyInvalid = errors.New("key invalid")
+	// ErrInsufficientPeers is used when there aren't enough peers for the request
+	ErrInsufficientPeers = errors.New("insufficient peers")
 )
+
+// ParseGRPCError parses a grpc error into a hexatype error
+func ParseGRPCError(e error) error {
+	var (
+		str = grpc.ErrorDesc(e)
+		err error
+	)
+
+	switch str {
+	case ErrPreviousHash.Error():
+		err = ErrPreviousHash
+
+	case ErrEntryNotFound.Error():
+		err = ErrEntryNotFound
+
+	case ErrKeyNotFound.Error():
+		err = ErrKeyNotFound
+
+	case ErrKeyExists.Error():
+		err = ErrKeyExists
+
+	case ErrKeyInvalid.Error():
+		err = ErrKeyInvalid
+
+	default:
+		err = e
+
+	}
+
+	return err
+}

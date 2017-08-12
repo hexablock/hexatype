@@ -116,6 +116,7 @@ func (m *KeylogIndex) GetEntries() [][]byte {
 
 // Request and response shared structure for hexalog
 type ReqResp struct {
+	// ID is based on the request/response
 	ID      []byte          `protobuf:"bytes,1,opt,name=ID,json=iD,proto3" json:"ID,omitempty"`
 	Entry   *Entry          `protobuf:"bytes,2,opt,name=Entry,json=entry" json:"Entry,omitempty"`
 	Options *RequestOptions `protobuf:"bytes,3,opt,name=Options,json=options" json:"Options,omitempty"`

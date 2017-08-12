@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/hex"
 	"encoding/json"
-	"log"
 )
 
 // NewKeylogIndex creates a new keylog index
@@ -73,8 +72,6 @@ func (idx *KeylogIndex) Iter(seek []byte, cb func(id []byte) error) (err error) 
 			return ErrEntryNotFound
 		}
 	}
-
-	log.Printf("[DEBUG] seek=%x pos=%d", seek, s)
 
 	l := idx.Count()
 	// Start from seek issueing callbacks

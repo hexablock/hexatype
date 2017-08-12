@@ -21,6 +21,7 @@ message KeylogIndex {
 
 // Request and response shared structure for hexalog
 message ReqResp {
+    // ID is based on the request/response
     bytes ID = 1;
     Entry Entry = 2;
     RequestOptions Options = 3;
