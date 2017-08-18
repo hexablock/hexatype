@@ -87,7 +87,7 @@ func (idx *KeylogIndex) Iter(seek []byte, cb func(id []byte) error) (err error) 
 
 // MarshalJSON is a custom marshaller to handle encoding byte slices to hex.  We do not
 // have an unmarshaller as the index is not directly written to.
-func (idx *KeylogIndex) MarshalJSON() ([]byte, error) {
+func (idx KeylogIndex) MarshalJSON() ([]byte, error) {
 
 	obj := struct {
 		Key      string
