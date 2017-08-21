@@ -15,8 +15,9 @@ message Entry {
 
 message KeylogIndex {
     bytes Key = 1;              // key for the index
-    bytes Location = 2;         // location id
-    repeated bytes Entries = 3; // entry ids
+    uint32 Height = 2;          // Current height of the keylog
+    bytes Marker = 3;           // this is used to mark incomplete or whatever
+    repeated bytes Entries = 4; // entry ids
 }
 
 // Request and response shared structure for hexalog

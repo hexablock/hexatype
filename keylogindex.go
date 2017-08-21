@@ -7,8 +7,11 @@ import (
 )
 
 // NewKeylogIndex creates a new keylog index
-func NewKeylogIndex(key, locID []byte) *KeylogIndex {
-	return &KeylogIndex{Key: key, Location: locID, Entries: [][]byte{}}
+func NewKeylogIndex(key []byte) *KeylogIndex {
+	return &KeylogIndex{
+		Key:     key,
+		Entries: [][]byte{},
+	}
 }
 
 // Append appends the id to the index making sure prev matches the id of the current
@@ -24,7 +27,27 @@ func (idx *KeylogIndex) Append(id, prev []byte) error {
 	}
 
 	idx.Entries = append(idx.Entries, id)
+	idx.Height++
+
+	// Check marker to see if it needs to be removed. The marker is removed once that entry
+	// has been added to the index
+	if idx.Marker != nil {
+		if bytes.Compare(idx.Marker, id) == 0 {
+			idx.Marker = nil
+		}
+	}
+
 	return nil
+}
+
+// Contains returns true if the index contains the given entry id
+func (idx *KeylogIndex) Contains(id []byte) bool {
+	for _, ent := range idx.Entries {
+		if bytes.Compare(ent, id) == 0 {
+			return true
+		}
+	}
+	return false
 }
 
 // Last returns the last entry id or nil if there are no entries.
@@ -43,6 +66,7 @@ func (idx *KeylogIndex) Rollback() int {
 	if l > 0 {
 		l--
 		idx.Entries = idx.Entries[:l]
+		idx.Height--
 	}
 
 	return l
@@ -88,15 +112,16 @@ func (idx *KeylogIndex) Iter(seek []byte, cb func(id []byte) error) (err error) 
 // MarshalJSON is a custom marshaller to handle encoding byte slices to hex.  We do not
 // have an unmarshaller as the index is not directly written to.
 func (idx KeylogIndex) MarshalJSON() ([]byte, error) {
-
 	obj := struct {
-		Key      string
-		Location string
-		Entries  []string
+		Key     string
+		Height  uint32
+		Marker  string `json:",omitempty"`
+		Entries []string
 	}{
-		Key:      string(idx.Key),
-		Location: hex.EncodeToString(idx.Location),
-		Entries:  make([]string, len(idx.Entries)),
+		Key:     string(idx.Key),
+		Height:  idx.Height,
+		Marker:  hex.EncodeToString(idx.Marker),
+		Entries: make([]string, len(idx.Entries)),
 	}
 
 	for i, e := range idx.Entries {
