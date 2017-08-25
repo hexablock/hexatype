@@ -34,6 +34,8 @@ message RequestOptions {
     int32 SourceIndex = 1;
     // Set of peers for the request.
     repeated hexaring.Location PeerSet = 2;
+    // Number of times to retry for a given request
+    int32 Retries = 3;
 }
 
 message KeyValuePair {
