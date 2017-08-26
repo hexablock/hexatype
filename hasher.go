@@ -2,9 +2,10 @@ package hexatype
 
 import (
 	"crypto/sha1"
-	"crypto/sha256"
 	"encoding/json"
 	"hash"
+
+	blake2b "github.com/minio/blake2b-simd"
 )
 
 // HashAlgorithm is the hashing algorithm a Hasher implements. e.g. SHA1 SHA256 SHA512 etc.
@@ -36,12 +37,12 @@ func (hasher SHA1Hasher) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// SHA256Hasher implements the Hasher interface for SHA1
+// SHA256Hasher implements the Hasher interface for SHA2
 type SHA256Hasher struct{}
 
 // New returns a new instance of a SHA1 hasher
 func (hasher *SHA256Hasher) New() hash.Hash {
-	return sha256.New()
+	return blake2b.New256()
 }
 
 // Algorithm returns the hashing algorithm the hasher implements
