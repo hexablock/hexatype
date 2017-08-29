@@ -40,6 +40,15 @@ func (idx *KeylogIndex) Append(id, prev []byte) error {
 	return nil
 }
 
+// SetMarker sets the marker for he index only if it is not currently in the index
+func (idx *KeylogIndex) SetMarker(marker []byte) bool {
+	if !idx.Contains(marker) {
+		idx.Marker = marker
+		return true
+	}
+	return false
+}
+
 // Contains returns true if the index contains the given entry id
 func (idx *KeylogIndex) Contains(id []byte) bool {
 	for _, ent := range idx.Entries {
@@ -59,17 +68,19 @@ func (idx *KeylogIndex) Last() []byte {
 	return idx.Entries[l-1]
 }
 
-// Rollback removes the last entry from the index if it contains entries returning the
-// remaining entry count
-func (idx *KeylogIndex) Rollback() int {
+// Rollback removes the last entry from the index. It returns the remaining entries and
+// whether a rollback was performed
+func (idx *KeylogIndex) Rollback() (int, bool) {
 	l := len(idx.Entries)
+	var ok bool
 	if l > 0 {
 		l--
 		idx.Entries = idx.Entries[:l]
+		ok = true
 		idx.Height--
 	}
 
-	return l
+	return l, ok
 }
 
 // Count returns the number of entries in the index
