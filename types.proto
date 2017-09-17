@@ -38,8 +38,3 @@ message RequestOptions {
     int32 Retries = 3;
 }
 
-message KeyValuePair {
-    bytes Key = 1;
-    bytes Value = 2;
-    Entry Entry = 3;
-}
