@@ -15,6 +15,8 @@ type HashAlgorithm string
 type Hasher interface {
 	New() hash.Hash
 	Algorithm() HashAlgorithm
+	ZeroHash() []byte
+	Size() int
 }
 
 // SHA1Hasher implements the Hasher interface for SHA1
@@ -28,6 +30,14 @@ func (hasher *SHA1Hasher) New() hash.Hash {
 // Algorithm returns the hashing algorithm the hasher implements
 func (hasher *SHA1Hasher) Algorithm() HashAlgorithm {
 	return HashAlgorithm("SHA1")
+}
+
+func (hasher *SHA1Hasher) ZeroHash() []byte {
+	return make([]byte, 20)
+}
+
+func (hasher *SHA1Hasher) Size() int {
+	return 20
 }
 
 // MarshalJSON is a custom json marshaller or the hasher
@@ -48,6 +58,14 @@ func (hasher *SHA256Hasher) New() hash.Hash {
 // Algorithm returns the hashing algorithm the hasher implements
 func (hasher *SHA256Hasher) Algorithm() HashAlgorithm {
 	return HashAlgorithm("SHA256")
+}
+
+func (hasher *SHA256Hasher) ZeroHash() []byte {
+	return make([]byte, 32)
+}
+
+func (hasher *SHA256Hasher) Size() int {
+	return 32
 }
 
 // MarshalJSON is a custom json marshaller or the hasher
