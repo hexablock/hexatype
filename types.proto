@@ -36,5 +36,11 @@ message RequestOptions {
     repeated hexaring.Location PeerSet = 2;
     // Number of times to retry for a given request
     int32 Retries = 3;
+    // Wait on ballot before returning
+    bool WaitBallot = 4;
+    // Wait for fsm to apply
+    bool WaitApply = 5;
+    // apply timeout in ms
+    int32 WaitApplyTimeout = 6;
 }
 
