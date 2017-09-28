@@ -13,7 +13,7 @@ message Entry {
     bytes Data = 5;
 }
 
-message KeylogIndex {
+message UnsafeKeylogIndex {
     bytes Key = 1;              // key for the index
     uint32 Height = 2;          // Current height of the keylog
     bytes Marker = 3;           // this is used to mark incomplete or whatever
@@ -36,11 +36,14 @@ message RequestOptions {
     repeated hexaring.Location PeerSet = 2;
     // Number of times to retry for a given request
     int32 Retries = 3;
+    // Retry interval for entry proposals
+    int32 RetryInterval = 4;
     // Wait on ballot before returning
-    bool WaitBallot = 4;
-    // Wait for fsm to apply
-    bool WaitApply = 5;
-    // apply timeout in ms
-    int32 WaitApplyTimeout = 6;
+    bool WaitBallot = 5;
+    // Wait for fsm to apply entry after ballot is closed. This should take
+    // effect only if WaitBallot is also true
+    bool WaitApply = 6;
+    // Apply timeout in ms.  This only takes effect if WaitApply is also set
+    int32 WaitApplyTimeout = 7;
 }
 
