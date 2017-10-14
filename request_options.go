@@ -19,6 +19,7 @@ func (o *RequestOptions) CloneWithSourceIndex(idx int32) *RequestOptions {
 		PeerSet:       make([]*hexaring.Location, len(o.PeerSet)),
 		RetryInterval: o.RetryInterval,
 		Retries:       o.Retries,
+		LTime:         o.LTime,
 	}
 	copy(opts.PeerSet, o.PeerSet)
 
