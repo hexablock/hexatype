@@ -17,6 +17,8 @@ var (
 	ErrKeyExists = errors.New("key exists")
 	// ErrKeyInvalid gets used when an invalid key is seen
 	ErrKeyInvalid = errors.New("key invalid")
+	// ErrKeyDegraded is used when a key contains a marker and a write is performed
+	ErrKeyDegraded = errors.New("key degraded")
 	// ErrInsufficientPeers is used when there aren't enough peers for the request
 	ErrInsufficientPeers = errors.New("insufficient peers")
 )
@@ -40,6 +42,9 @@ func ParseGRPCError(e error) error {
 
 	case ErrKeyExists.Error():
 		err = ErrKeyExists
+
+	case ErrKeyDegraded.Error():
+		err = ErrKeyDegraded
 
 	case ErrKeyInvalid.Error():
 		err = ErrKeyInvalid

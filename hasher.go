@@ -32,10 +32,12 @@ func (hasher *SHA1Hasher) Algorithm() HashAlgorithm {
 	return HashAlgorithm("SHA1")
 }
 
+// ZeroHash returns a zero hash for SHA1
 func (hasher *SHA1Hasher) ZeroHash() []byte {
 	return make([]byte, 20)
 }
 
+// Size returns the hash size
 func (hasher *SHA1Hasher) Size() int {
 	return 20
 }
@@ -60,10 +62,12 @@ func (hasher *SHA256Hasher) Algorithm() HashAlgorithm {
 	return HashAlgorithm("SHA256")
 }
 
+// ZeroHash returns a zero hash for SHA256
 func (hasher *SHA256Hasher) ZeroHash() []byte {
 	return make([]byte, 32)
 }
 
+// Size returns the size of the hash
 func (hasher *SHA256Hasher) Size() int {
 	return 32
 }
