@@ -6,6 +6,9 @@ import (
 	"google.golang.org/grpc"
 )
 
+// This file contains errors across various hexablock products.  They are kept
+// here for implemented interfaces to use.
+
 var (
 	// ErrPreviousHash is used when the previous hash of an entry does not match
 	ErrPreviousHash = errors.New("previous hash mismatch")
