@@ -12,4 +12,4 @@ test-race:
 	go test -race .
 
 protoc:
-	protoc types.proto -I ./ -I ../../../ --go_out=plugins=grpc:.
+	protoc structs.proto -I ./ -I ../../../ --go_out=plugins=grpc:.

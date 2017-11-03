@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package hexatype;
+
+import "github.com/hexablock/vivaldi/structs.proto";
+
+message Service {
+    string Name = 1;
+    bytes Address = 2;
+}
+
+message Node {
+    bytes ID = 1;
+    bytes Address = 2;
+    int64 LastSeen = 3;
+    uint32 Heartbeats = 4;
+    string Region = 5;
+    string Sector = 6;
+    string Zone = 7;
+    // Each byte slice is a key-value pair
+    bytes Meta = 8;
+    // Virtual coordinate space
+    vivaldi.Coordinate Coordinates = 9;
+}
