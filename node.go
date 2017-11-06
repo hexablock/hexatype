@@ -38,9 +38,16 @@ func (node *Node) IP() net.IP {
 // Metadata parses the metadata bytes into a map
 func (node *Node) Metadata() map[string]string {
 	m := make(map[string]string)
-	for _, k := range node.Meta {
-		p := strings.Split(string(k), "=")
-		m[p[0]] = p[1]
+	if node.Meta == nil || len(node.Meta) == 0 {
+		return m
+	}
+
+	lines := strings.Split(string(node.Meta), ",")
+
+	for _, k := range lines {
+		if p := strings.Split(k, "="); len(p) == 2 {
+			m[p[0]] = p[1]
+		}
 	}
 	return m
 }
