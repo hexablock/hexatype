@@ -10,6 +10,7 @@ message Service {
 }
 
 message Node {
+    // Auto-generated. Will be unique across cluster
     bytes ID = 1;
     bytes Address = 2;
     int64 LastSeen = 3;

@@ -13,6 +13,15 @@ import (
 	"github.com/hexablock/vivaldi"
 )
 
+// NewNode returns a new node with the given ip and port
+func NewNode(addr string, port int) *Node {
+	ip := net.ParseIP(addr)
+	pb := make([]byte, 2)
+	binary.BigEndian.PutUint16(pb, uint16(port))
+
+	return &Node{Address: append(ip, pb...)}
+}
+
 // HashID returns the hash the node address
 func (node *Node) HashID(h hash.Hash) []byte {
 	h.Write(node.Address)
