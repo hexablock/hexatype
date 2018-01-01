@@ -15,11 +15,14 @@ message Node {
     bytes Address = 2;
     int64 LastSeen = 3;
     uint32 Heartbeats = 4;
-    string Region = 5;
-    string Sector = 6;
-    string Zone = 7;
+    uint64 LTime = 5;
+    // From the perspective of the 'cluster' node returning this node info
+    int64 Latency = 6;
+    string Region = 7;
+    string Sector = 8;
+    string Zone = 9;
     // Each byte slice is a key-value pair
-    bytes Meta = 8;
+    bytes Meta = 10;
     // Virtual coordinate space
-    vivaldi.Coordinate Coordinates = 9;
+    vivaldi.Coordinate Coordinates = 11;
 }

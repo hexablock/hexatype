@@ -44,7 +44,19 @@ func (node *Node) IP() net.IP {
 	return net.IP(node.Address[:len(node.Address)-2])
 }
 
-// Metadata parses the metadata bytes into a map
+// SetMetadata sets the key value to the meta bytes.  It does not check for
+// repeats of keys
+func (node *Node) SetMetadata(key, value string) {
+	str := strings.Join([]string{key, value}, "=")
+	if node.Meta == nil || len(node.Meta) == 0 {
+		node.Meta = []byte(str)
+	} else {
+		node.Meta = append(node.Meta, append([]byte(","), []byte(str)...)...)
+	}
+}
+
+// Metadata parses the metadata bytes into a map.  In case of duplicate keys the
+// last key will be used
 func (node *Node) Metadata() map[string]string {
 	m := make(map[string]string)
 	if node.Meta == nil || len(node.Meta) == 0 {
@@ -67,7 +79,9 @@ func (node *Node) MarshalJSON() ([]byte, error) {
 		ID          string
 		Address     string
 		LastSeen    time.Time
+		LTime       uint64
 		Heartbeats  uint32
+		Latency     int64
 		Region      string
 		Sector      string
 		Zone        string
@@ -77,7 +91,9 @@ func (node *Node) MarshalJSON() ([]byte, error) {
 		hex.EncodeToString(node.ID),
 		node.Host(),
 		time.Unix(0, node.LastSeen),
+		node.LTime,
 		node.Heartbeats,
+		node.Latency,
 		node.Region,
 		node.Sector,
 		node.Zone,
