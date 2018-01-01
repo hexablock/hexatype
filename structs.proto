@@ -12,16 +12,24 @@ message Service {
 message Node {
     // Auto-generated. Will be unique across cluster
     bytes ID = 1;
+    // Advertised cluster address
     bytes Address = 2;
+    // In nanseconds
     int64 LastSeen = 3;
+    // Number of times 'contacted' e.g. update on each ping
     uint32 Heartbeats = 4;
+    // Virtual cluster time
     uint64 LTime = 5;
-    // From the perspective of the 'cluster' node returning this node info
+    // Latency from the perspective of the 'cluster' node returning this
+    // object in nanseconds
     int64 Latency = 6;
+    // Grouping
     string Region = 7;
+    // Sub-grouping
     string Sector = 8;
+    // Sub-Sub-grouping
     string Zone = 9;
-    // Each byte slice is a key-value pair
+    // Extended metadata, each byte slice being string key=value pairs
     bytes Meta = 10;
     // Virtual coordinate space
     vivaldi.Coordinate Coordinates = 11;

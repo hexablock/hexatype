@@ -22,6 +22,11 @@ func NewNode(addr string, port int) *Node {
 	return &Node{Address: append(ip, pb...)}
 }
 
+// LamportTime returns the nodes virtual cluster time
+func (node *Node) LamportTime() LamportTime {
+	return LamportTime(node.LTime)
+}
+
 // HashID returns the hash the node address
 func (node *Node) HashID(h hash.Hash) []byte {
 	h.Write(node.Address)
